@@ -1,8 +1,10 @@
+#!/usr/bin/env node
 import { createInterface } from 'node:readline';
 import process from 'node:process';
 import { spawnSync } from 'node:child_process';
 import { join } from 'node:path';
 import { unlinkSync, writeFileSync, mkdirSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
 import { WeChatApi } from './wechat/api.js';
 import { loadLatestAccount, type AccountData } from './wechat/accounts.js';
@@ -93,6 +95,27 @@ function openFile(filePath: string): void {
   if (result.error) {
     logger.warn('Failed to open file', { cmd, filePath, error: result.error.message });
   }
+}
+
+function runDaemonScript(command: 'start' | 'stop' | 'restart' | 'status' | 'logs'): void {
+  const projectDir = fileURLToPath(new URL('..', import.meta.url));
+  const daemonScript = join(projectDir, 'scripts', 'daemon.sh');
+  const result = spawnSync('bash', [daemonScript, command], { stdio: 'inherit' });
+
+  if (result.error) {
+    throw result.error;
+  }
+
+  process.exit(result.status ?? 0);
+}
+
+function printUsage(): void {
+  console.log(`wechat-opencode
+
+Usage:
+  wechat-opencode setup
+  wechat-opencode serve
+  wechat-opencode start|stop|restart|status|logs`);
 }
 
 // ---------------------------------------------------------------------------
@@ -503,17 +526,29 @@ async function sendToProvider(
 
 const command = process.argv[2];
 
-if (command === 'setup') {
-  runSetup().catch((err) => {
-    logger.error('Setup failed', { error: err instanceof Error ? err.message : String(err) });
-    console.error('设置失败:', err);
-    process.exit(1);
-  });
-} else {
-  // 'start' or no argument
-  runDaemon().catch((err) => {
-    logger.error('Daemon start failed', { error: err instanceof Error ? err.message : String(err) });
-    console.error('启动失败:', err);
-    process.exit(1);
-  });
+switch (command) {
+  case 'setup':
+    runSetup().catch((err) => {
+      logger.error('Setup failed', { error: err instanceof Error ? err.message : String(err) });
+      console.error('设置失败:', err);
+      process.exit(1);
+    });
+    break;
+  case 'serve':
+    runDaemon().catch((err) => {
+      logger.error('Daemon start failed', { error: err instanceof Error ? err.message : String(err) });
+      console.error('启动失败:', err);
+      process.exit(1);
+    });
+    break;
+  case 'start':
+  case 'stop':
+  case 'restart':
+  case 'status':
+  case 'logs':
+    runDaemonScript(command);
+    break;
+  default:
+    printUsage();
+    process.exit(command ? 1 : 0);
 }

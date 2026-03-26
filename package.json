@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "description": "Chat with OpenCode from WeChat - a WeChat bridge for local OpenCode",
   "type": "module",
+  "bin": {
+    "wechat-opencode": "dist/main.js"
+  },
   "scripts": {
     "build": "tsc",
     "postinstall": "npm run build",
-    "start": "node dist/main.js",
-    "run": "node dist/main.js start",
+    "start": "node dist/main.js serve",
+    "run": "node dist/main.js serve",
     "dev": "tsc --watch",
     "test": "node --test dist/tests/*.test.js",
     "setup": "node dist/main.js setup",

@@ -23,6 +23,12 @@ A WeChat bridge for your local [OpenCode](https://github.com/sst/opencode). Chat
 ## Installation
 
 ```bash
+npm install -g wechat-opencode
+```
+
+For local development:
+
+```bash
 git clone https://github.com/CG-man/wechat-opencode.git ~/wechat-opencode
 cd ~/wechat-opencode
 npm install
@@ -33,14 +39,30 @@ npm install
 ### 1. Bind WeChat
 
 ```bash
-cd ~/wechat-opencode
-npm run setup
+wechat-opencode setup
 ```
 
 ### 2. Start the daemon
 
 ```bash
-npm run daemon -- start
+wechat-opencode start
+```
+
+Other lifecycle commands:
+
+```bash
+wechat-opencode status
+wechat-opencode logs
+wechat-opencode restart
+wechat-opencode stop
+```
+
+If you use a proxy, export it before starting the daemon so launchd/systemd can persist it:
+
+```bash
+export HTTPS_PROXY=http://127.0.0.1:7890
+export HTTP_PROXY=http://127.0.0.1:7890
+wechat-opencode start
 ```
 
 ### 3. Chat in WeChat

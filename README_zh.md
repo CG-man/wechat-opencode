@@ -23,6 +23,12 @@
 ## 安装
 
 ```bash
+npm install -g wechat-opencode
+```
+
+本地开发方式：
+
+```bash
 git clone https://github.com/CG-man/wechat-opencode.git ~/wechat-opencode
 cd ~/wechat-opencode
 npm install
@@ -33,14 +39,30 @@ npm install
 ### 1. 绑定微信
 
 ```bash
-cd ~/wechat-opencode
-npm run setup
+wechat-opencode setup
 ```
 
 ### 2. 启动守护进程
 
 ```bash
-npm run daemon -- start
+wechat-opencode start
+```
+
+其他守护命令：
+
+```bash
+wechat-opencode status
+wechat-opencode logs
+wechat-opencode restart
+wechat-opencode stop
+```
+
+如果你依赖代理，请先在启动前导出代理环境变量，这样 launchd/systemd 才会把它持久化到守护进程里：
+
+```bash
+export HTTPS_PROXY=http://127.0.0.1:7890
+export HTTP_PROXY=http://127.0.0.1:7890
+wechat-opencode start
 ```
 
 ### 3. 在微信里聊天

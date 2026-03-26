@@ -40,9 +40,8 @@ macos_start() {
 
   mkdir -p "$DATA_DIR/logs"
 
-  # Collect Anthropic/Claude env vars for plist
   local plist_extra_env=""
-  for var in ANTHROPIC_AUTH_TOKEN ANTHROPIC_API_KEY ANTHROPIC_BASE_URL CLAUDE_API_KEY; do
+  for var in OPENAI_API_KEY OPENAI_BASE_URL ANTHROPIC_API_KEY ANTHROPIC_BASE_URL GOOGLE_API_KEY OPENCODE_WECHAT_DATA_DIR HTTP_PROXY HTTPS_PROXY ALL_PROXY NO_PROXY http_proxy https_proxy all_proxy no_proxy; do
     if [ -n "${!var:-}" ]; then
       plist_extra_env="${plist_extra_env}    <key>${var}</key>
     <string>${!var}</string>
@@ -61,7 +60,7 @@ macos_start() {
   <array>
     <string>${node_bin}</string>
     <string>${PROJECT_DIR}/dist/main.js</string>
-    <string>start</string>
+    <string>serve</string>
   </array>
   <key>WorkingDirectory</key>
   <string>${PROJECT_DIR}</string>
@@ -97,7 +96,7 @@ macos_stop() {
 
 macos_status() {
   if macos_is_loaded; then
-    local pid=$(pgrep -f "dist/main.js start" 2>/dev/null | head -1)
+    local pid=$(pgrep -f "dist/main.js serve" 2>/dev/null | head -1)
     if [ -n "$pid" ]; then
       echo "Running (PID: $pid)"
     else
@@ -172,9 +171,8 @@ linux_create_service_file() {
 
   mkdir -p "$(dirname "$service_file")"
 
-  # Collect Anthropic/Claude env vars to pass through to the service
   local extra_env=""
-  for var in ANTHROPIC_AUTH_TOKEN ANTHROPIC_API_KEY ANTHROPIC_BASE_URL CLAUDE_API_KEY; do
+  for var in OPENAI_API_KEY OPENAI_BASE_URL ANTHROPIC_API_KEY ANTHROPIC_BASE_URL GOOGLE_API_KEY OPENCODE_WECHAT_DATA_DIR HTTP_PROXY HTTPS_PROXY ALL_PROXY NO_PROXY http_proxy https_proxy all_proxy no_proxy; do
     if [ -n "${!var:-}" ]; then
       extra_env="${extra_env}Environment=${var}=${!var}
 "
@@ -189,7 +187,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=${node_bin} ${PROJECT_DIR}/dist/main.js start
+ExecStart=${node_bin} ${PROJECT_DIR}/dist/main.js serve
 WorkingDirectory=${PROJECT_DIR}
 Restart=always
 RestartSec=10
@@ -227,7 +225,7 @@ linux_direct_start() {
   mkdir -p "$DATA_DIR/logs"
 
   echo "Starting wechat-opencode daemon (direct mode)..."
-  nohup "$node_bin" "${PROJECT_DIR}/dist/main.js" start \
+  nohup "$node_bin" "${PROJECT_DIR}/dist/main.js" serve \
     >> "$DATA_DIR/logs/stdout.log" \
     2>> "$DATA_DIR/logs/stderr.log" &
   local pid=$!

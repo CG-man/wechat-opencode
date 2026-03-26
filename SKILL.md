@@ -17,6 +17,12 @@ description: 微信消息桥接 - 在微信中与 OpenCode 对话。支持文字
 ## 安装
 
 ```bash
+npm install -g wechat-opencode
+```
+
+本地开发时：
+
+```bash
 cd ~/wechat-opencode
 npm install
 ```
@@ -36,10 +42,10 @@ npm install
 ### 第 1 步：检查是否已安装
 
 ```bash
-cd ~/wechat-opencode && test -d node_modules && echo "installed" || echo "not_installed"
+command -v wechat-opencode >/dev/null 2>&1 && echo "installed" || echo "not_installed"
 ```
 
-- 如果 `not_installed`：提示用户运行 `cd ~/wechat-opencode && npm install` 安装依赖，然后停止。
+- 如果 `not_installed`：提示用户运行 `npm install -g wechat-opencode` 安装，然后停止。
 
 ### 第 2 步：检查是否已绑定微信账号
 
@@ -53,7 +59,7 @@ ls ~/.config/opencode/wechat/accounts/*.json 2>/dev/null | head -1
 ### 第 3 步：检查 daemon 运行状态
 
 ```bash
-cd ~/wechat-opencode && npm run daemon -- status
+wechat-opencode status
 ```
 
 ### 第 4 步：根据状态展示信息
@@ -93,16 +99,16 @@ cd ~/wechat-opencode && npm run daemon -- status
 
 ## 子命令参考
 
-所有命令的工作目录为 `~/wechat-opencode`。
+全局安装后可直接使用 `wechat-opencode`。
 
 | 命令 | 执行 | 说明 |
 |------|------|------|
-| setup | `npm run setup` | 首次安装向导：生成二维码 → 微信扫码 → 配置工作目录 |
-| start | `npm run daemon -- start` | 启动守护进程 |
-| stop | `npm run daemon -- stop` | 停止守护进程 |
-| restart | `npm run daemon -- restart` | 重启守护进程 |
-| status | `npm run daemon -- status` | 查看运行状态 |
-| logs | `npm run daemon -- logs` | 查看最近日志 |
+| setup | `wechat-opencode setup` | 首次安装向导：生成二维码 → 微信扫码 → 配置工作目录 |
+| start | `wechat-opencode start` | 启动守护进程 |
+| stop | `wechat-opencode stop` | 停止守护进程 |
+| restart | `wechat-opencode restart` | 重启守护进程 |
+| status | `wechat-opencode status` | 查看运行状态 |
+| logs | `wechat-opencode logs` | 查看最近日志 |
 
 ## 权限审批
 
