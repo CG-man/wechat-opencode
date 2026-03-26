@@ -44,32 +44,33 @@ npm install
 wechat-opencode setup
 ```
 
-### 2. Start the daemon
+### 2. Run the bridge
 
 ```bash
-wechat-opencode start
+wechat-opencode serve
 ```
 
-Other lifecycle commands:
+### 3. Chat in WeChat
+
+Send any message in WeChat to talk to OpenCode.
+
+Optional daemon lifecycle commands:
 
 ```bash
 wechat-opencode status
 wechat-opencode logs
 wechat-opencode restart
 wechat-opencode stop
+wechat-opencode start
 ```
 
-If you use a proxy, export it before starting the daemon so launchd/systemd can persist it:
+If you use a proxy, export it before starting the bridge or daemon:
 
 ```bash
 export HTTPS_PROXY=http://127.0.0.1:7890
 export HTTP_PROXY=http://127.0.0.1:7890
-wechat-opencode start
+wechat-opencode serve
 ```
-
-### 3. Chat in WeChat
-
-Send any message in WeChat to talk to OpenCode.
 
 ## WeChat Commands
 

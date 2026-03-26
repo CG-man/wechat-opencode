@@ -44,32 +44,33 @@ npm install
 wechat-opencode setup
 ```
 
-### 2. 启动守护进程
+### 2. 运行桥接服务
 
 ```bash
-wechat-opencode start
+wechat-opencode serve
 ```
 
-其他守护命令：
+### 3. 在微信里聊天
+
+直接发消息即可与 OpenCode 对话。
+
+可选的守护命令：
 
 ```bash
 wechat-opencode status
 wechat-opencode logs
 wechat-opencode restart
 wechat-opencode stop
+wechat-opencode start
 ```
 
-如果你依赖代理，请先在启动前导出代理环境变量，这样 launchd/systemd 才会把它持久化到守护进程里：
+如果你依赖代理，请先在启动桥接服务或守护进程前导出代理环境变量：
 
 ```bash
 export HTTPS_PROXY=http://127.0.0.1:7890
 export HTTP_PROXY=http://127.0.0.1:7890
-wechat-opencode start
+wechat-opencode serve
 ```
-
-### 3. 在微信里聊天
-
-直接发消息即可与 OpenCode 对话。
 
 ## 微信命令
 
