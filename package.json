@@ -7,8 +7,8 @@
     "wechat-opencode": "dist/main.js"
   },
   "scripts": {
-    "build": "tsc",
-    "postinstall": "npm run build",
+    "build": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\" && tsc && chmod +x dist/main.js",
+    "prepack": "npm run build",
     "start": "node dist/main.js serve",
     "run": "node dist/main.js serve",
     "dev": "tsc --watch",
@@ -40,5 +40,13 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Wechat-ggGitHub/wechat-opencode.git"
-  }
+  },
+  "files": [
+    "dist",
+    "scripts",
+    "README.md",
+    "README_zh.md",
+    "SKILL.md",
+    "LICENSE"
+  ]
 }

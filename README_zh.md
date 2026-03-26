@@ -26,6 +26,8 @@
 npm install -g wechat-opencode
 ```
 
+发布包会直接携带预编译好的 `dist/`，所以全局安装时不需要再执行 TypeScript 编译。
+
 本地开发方式：
 
 ```bash

@@ -26,6 +26,8 @@ A WeChat bridge for your local [OpenCode](https://github.com/sst/opencode). Chat
 npm install -g wechat-opencode
 ```
 
+The published package ships with prebuilt `dist/`, so global install does not need to run TypeScript compilation.
+
 For local development:
 
 ```bash
